@@ -36,8 +36,21 @@ angular.module('projectElll.controllers', [])
 
 
 .controller('inviteCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+  $scope.getMobileContacts = function() {
+	$scope.phoneContacts = [];
+
+    function SuccessCallBack(contacts) {
+      for (var i = 0; i < contacts.length; i++) {
+        var contact = contacts[i];
+        $scope.phoneContacts.push(contact);
+      }
+    };
+	function ErrorCallBack(exception) {
+		alert(exception);
+    };
+	var options = {'multiple':true};
+	$cordovaContacts.find(options).then(SuccessCallBack, ErrorCallBack);
+	
   };
 })
 
