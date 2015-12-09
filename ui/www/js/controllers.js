@@ -19,14 +19,19 @@ angular.module('projectElll.controllers', [])
 
 .controller('SignupCtrl', function($scope, $stateParams, $state, Chats, $localstorage, $ionicPopup) {
     //$scope.chat = Chats.get($stateParams.chatId);
-    val = $localstorage.get("registration");
-    if(val != undefined){
-        val = $localstorage.get("verification");
-        if(val != undefined){
-            $state.go('elll.dashbord');
-        }else{
-            $state.go('elll.verification');
-        }
+    reg = $localstorage.get("registration");
+    ver = $localstorage.get("verification");
+    ec = $localstorage.get("emergencycontacts");
+    invf = $localstorage.get("invite");
+    
+    if(invf != undefined){
+        $state.go('elll.dashboard');
+    }else if(ec != undefined){
+        $state.go('elll.invite');
+    }else if(ver != undefined){
+        $state.go('elll.emergencycontacts');
+    }else if(reg != undefined){
+        $state.go('elll.verification');
     }
     
     $scope.reg = {};
@@ -71,7 +76,7 @@ angular.module('projectElll.controllers', [])
         }
         //TODO: calls rest API for verification
         $localstorage.set('verification', 'done');
-        $state.go('elll.dashboard');
+        $state.go('elll.emergencycontacts');
     }
     
     $scope.resend = function(){
@@ -83,14 +88,17 @@ angular.module('projectElll.controllers', [])
 })
 
 
-.controller('EmergencyContactsCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('EmergencyContactsCtrl', function($scope, $state, $localstorage) {
+    $scope.next = function(){
+        //TODO: check minimum number of emergency contacts selected, else alert
+        //If selected send to server as well as cache locally
+        $localstorage.set("emergencycontacts", "Done")
+        $state.go("elll.invite");
+    };
 })
 
 
-.controller('inviteCtrl', function($scope) {
+.controller('inviteCtrl', function($scope, $state, $localstorage) {
   $scope.getMobileContacts = function() {
 	$scope.phoneContacts = [];
 
@@ -107,11 +115,37 @@ angular.module('projectElll.controllers', [])
 	$cordovaContacts.find(options).then(SuccessCallBack, ErrorCallBack);
 	
   };
+  $scope.skip = function(){
+      $localstorage.set("invite", "Done")
+        $state.go("elll.dashboard");
+  };
+    
 })
 
 //for Home and SOS controller
-.controller('SOSCtrl', function($scope, $ionicHistory) {
+.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout) {
     $ionicHistory.clearHistory();
+    $scope.onHold = function($event){
+         var posOptions = {timeout: 20000, enableHighAccuracy: true};
+         $cordovaGeolocation.getCurrentPosition(posOptions)
+            .then(function (position) {
+                var lat  = position.coords.latitude
+                var long = position.coords.longitude
+                console.log('Got location (lat,long) : (' + lat + ',' + long + ')');
+                var template = '<ion-popover-view><ion-header-bar> <h1 class="title">SOS Generated</h1> </ion-header-bar> <ion-content> (lat - long)  = (' + lat + ' - ' + long + ')</ion-content></ion-popover-view>';
+                $scope.popover = $ionicPopover.fromTemplate(template, {
+                    scope: $scope
+                });
+                
+               $scope.popover.show($event);
+                
+               $timeout(function(){$scope.popover.hide()}, 3000);
+                
+             }, function(err) {
+                   // error
+                   console.log("Failed to get geo location");
+             });
+         };
 })
 
 .controller('GrievanceCtrl', function($scope) {
