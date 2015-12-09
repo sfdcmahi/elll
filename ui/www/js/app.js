@@ -150,6 +150,6 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/elll/dashbord');
+  $urlRouterProvider.otherwise('/elll/signup');
 
 });
