@@ -78,8 +78,8 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
   })
   
   
-  .state('elll.dashbord', {
-    url: '/dashbord',
+  .state('elll.dashboard', {
+    url: '/dashboard',
     views: {
       'ellContent': {
         templateUrl: 'templates/elll-home.html',
