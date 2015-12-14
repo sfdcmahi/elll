@@ -1,3 +1,23 @@
+.contact-list img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.contact-list.item {
+  padding-top: 0;
+  padding-bottom: 0;
+  
+}
+.conatct-li{
+  display: flex;
+  align-items: center;
+  line-height: 60px;
+}
+.no-padding {
+    padding: 0px !important;
+    border: 0 !important;
+}
 
 .button-ios-rounded {
   display: inline-block;
