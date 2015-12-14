@@ -88,34 +88,79 @@ angular.module('projectElll.controllers', [])
 })
 
 
-.controller('EmergencyContactsCtrl', function($scope, $state, $localstorage) {
-    $scope.next = function(){
-        //TODO: check minimum number of emergency contacts selected, else alert
-        //If selected send to server as well as cache locally
-        $localstorage.set("emergencycontacts", "Done")
-        $state.go("elll.invite");
-    };
+.controller('EmergencyContactsCtrl', function($scope,ContactsService,$ionicPlatform, $localstorage, $state,$filter,$ionicPopup,$rootScope) {
+  $scope.phoneContacts = [{"displayName"   : "Mahesh",
+			"emails"        : [],
+			"phones"        :  [],
+			"photos"        : [],
+			"checked"		:false}];
+			
+  $scope.getMobileContacts = function() {
+	if(window.cordova){
+		$rootScope.show();
+	ContactsService.AllContacts().then(
+                function(contact) {
+                    $scope.phoneContacts=contact;                 
+					$rootScope.hide();
+                },
+                function(failure) {
+                    console.log(" Failed to fetch a Contacts");
+					$rootScope.hide();
+                }
+            );
+	}
+  
+  
+	
+  };
+   ///if(window.cordova) 
+		//$scope.getMobileContacts();
+  
+   $scope.addEmergencyContacts = function(){
+	  var selectedContacts=$filter('filter')($scope.phoneContacts,{checked:true})
+	  if(selectedContacts.length>0){
+		   $state.go("elll.invite");
+		   
+	  }
+	  else{
+		  $ionicPopup.alert({
+                template: 'Please select minimum 1 contact'
+            });
+	  }
+     // $localstorage.set("emergencycontacts", "Done")
+      
+  };
 })
 
 
-.controller('inviteCtrl', function($scope, $state, $localstorage) {
-  $scope.getMobileContacts = function() {
-	$scope.phoneContacts = [];
 
-    function SuccessCallBack(contacts) {
-      for (var i = 0; i < contacts.length; i++) {
-        var contact = contacts[i];
-        $scope.phoneContacts.push(contact);
-      }
-    };
-	function ErrorCallBack(exception) {
-		alert(exception);
-    };
-	var options = {'multiple':true};
-	$cordovaContacts.find(options).then(SuccessCallBack, ErrorCallBack);
+.controller('inviteCtrl', function($scope, $state, $localstorage,$ionicPlatform,ContactsService,$rootScope) {
+  
+  $scope.phoneContacts = [];
+  $scope.getMobileContacts = function() {
+	if(window.cordova){
+		$rootScope.show();
+	ContactsService.AllContacts().then(
+                function(contact) {
+                    $scope.phoneContacts=contact;                 
+					$rootScope.hide();
+                },
+                function(failure) {
+                    console.log(" Failed to fetch a contacts");
+					$rootScope.hide();
+                }
+            );
+	}
+  
 	
   };
+ //if(window.cordova) 
+	//$scope.getMobileContacts();
   $scope.skip = function(){
+      $localstorage.set("invite", "Done")
+        $state.go("elll.dashboard");
+  };
+   $scope.continue = function(){
       $localstorage.set("invite", "Done")
         $state.go("elll.dashboard");
   };

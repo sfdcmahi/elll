@@ -65,4 +65,51 @@ angular.module('projectElll.services', [])
     }
   }
 }])
-;
+.service("ContactsService", ['$q','$cordovaContacts', function($q,$cordovaContacts) {
+
+	var formatContactlist = function(contacts) {
+		var phoneContacts = []
+		angular.forEach(contacts, function(contact, key){
+			if(contact.phoneNumbers)
+			 phoneContacts.push(formatContact(contact));
+		});
+		console.log(phoneContacts);
+		return phoneContacts
+	};
+	
+	var formatContact = function(contact) {
+		
+		return {
+			"displayName"   : contact.name.formatted || contact.name.givenName + " " + contact.name.familyName || "Mystery Person",
+			"emails"        : contact.emails || [],
+			"phones"        : contact.phoneNumbers || [],
+			"photos"        : contact.photos || [],
+			"checked"		:false
+		};
+
+	};
+	var options = {'multiple':true};
+		options.filter= '';
+		options.fields = ["displayName",'phoneNumbers','photos','givenName','familyName'];
+	var AllContacts = function() {
+		
+		var deferred = $q.defer();
+		
+		 $cordovaContacts.find({filter: ''}).then(function(result) {
+			
+			deferred.resolve( formatContactlist(result) );
+			
+		}, function(error) {
+
+			console.log("ERROR: " + error);
+		});
+		
+
+		return deferred.promise;
+	};
+
+	return {
+		AllContacts : AllContacts
+	};
+}])
+	;

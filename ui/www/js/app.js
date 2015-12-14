@@ -4,7 +4,7 @@
 // 'projectElll.controllers' is found in controllers.js
 angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services','ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$rootScope,$ionicLoading) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,8 +18,21 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       StatusBar.styleDefault();
     }
   });
+   $rootScope.show = function(text) {
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios"></ion-spinner>',
+		hideOnStageChange: true
+      });
+    };
+
+    $rootScope.hide = function() {
+      $ionicLoading.hide();
+    };
 })
 
+.config(['$compileProvider', function($compileProvider) {
+            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|content):|data:image\//);
+}])
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states

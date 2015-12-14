@@ -1,36 +1,36 @@
-<ion-view title="Emergency Contacts ">
-    <ion-content padding="'true'" class="has-header">
-        <a menu-close="" ng-click="next()" class="button button-royal button-block button-large">Next</a>
-        <ion-list>
-            <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Search for Contact">
-            </label>
-            <ion-item menu-close="" class="item-thumbnail-left">
-                <img>
-                <h2>Title</h2>
-                <p>Item</p>
+<ion-view title="Emergency Contacts "  cache-view="false" ng-init="getMobileContacts()">
+<ion-nav-buttons side="right">
+
+  <button class="button button-clear button-light" ng-click="addEmergencyContacts()">Next</button>
+</div>
+    </ion-nav-buttons>  
+ <ion-header-bar class="bar-light bar-subheader">
+     <label class="item item-input  "> 
+	  <i class="icon ion-search placeholder-icon"></i>
+	  <input type="search"
+             placeholder="Filter contacts..."
+             ng-model="search"
+             class="full-width">
+      <button ng-if="search.length"
+              class="button button-icon ion-android-close input-button"
+              ng-click="clearSearch()">
+      </button>
+	   </label>
+    </ion-header-bar>
+    <ion-content  class="has-header">
+      
+        <ion-list class="contact-list">
+              <ion-item menu-close="" class="conatct-li" ng-repeat="c in phoneContacts| filter:{ displayName: search }">
+					
+				   <label class="checkbox">
+					<input type="checkbox" ng-click=" $event.stopPropagation();" ng-model="c.checked">
+				 </label>
+			 <img src="{{c.photos[0].value}}" ng-if="contact.photos.length > 0">
+			 <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Silver_-_replace_this_image_male.svg/200px-Silver_-_replace_this_image_male.svg.png" ng-if="c.photos.length === 0">
+         	 {{c.displayName}}
+			 {{c.photos[0].value}}
             </ion-item>
-            <ion-item menu-close="" class="item-thumbnail-left">
-                <img>
-                <h2>Title</h2>
-                <p>Item</p>
-            </ion-item>
-            <ion-item menu-close="" class="item-thumbnail-left">
-                <img>
-                <h2>Title</h2>
-                <p>Item</p>
-            </ion-item>
-            <ion-item menu-close="" class="item-thumbnail-left">
-                <img>
-                <h2>Title</h2>
-                <p>Item</p>
-            </ion-item>
-            <ion-item menu-close="" class="item-thumbnail-left">
-                <img>
-                <h2>Title</h2>
-                <p>Item</p>
-            </ion-item>
+          
         </ion-list>
     </ion-content>
 </ion-view>
