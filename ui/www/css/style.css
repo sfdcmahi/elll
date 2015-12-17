@@ -90,4 +90,11 @@ iVBORw0KGgoAAAANSUhEUgAAAK8AAACvCAYAAACLko51AAAKQWlDQ1BJQ0MgUHJvZmlsZQAASA2dlndU
     -ms-flex-align: center;
     align-items: center;
 }
-
+.scroll {
+    height: 100%;
+}
+ 
+#map {
+    width: 100%;
+    height: 100%;
+}
