@@ -1,4 +1,4 @@
-angular.module('projectElll.controllers', [])
+angular.module('projectElll.controllers', ['projectElll.services'])
 
 .controller('DashCtrl', function($scope) {})
 
@@ -184,7 +184,7 @@ angular.module('projectElll.controllers', [])
 })
 
 //for Home and SOS controller
-.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout,$ionicPlatform,$cordovaPush,  $timeout,backgroundTasks) {
+.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout,$ionicPlatform,$cordovaPush,  $timeout,backgroundTasks, $state,MapsFactory) {
     $ionicHistory.clearHistory();
     $scope.register = function () {
 	    var config = {
@@ -212,7 +212,8 @@ angular.module('projectElll.controllers', [])
          var posOptions = {timeout: 20000, enableHighAccuracy: true};
          $cordovaGeolocation.getCurrentPosition(posOptions)
             .then(function (position) {
-                var lat  = position.coords.latitude
+                MapsFactory.setMyPosition(position);
+                /*var lat  = position.coords.latitude
                 var long = position.coords.longitude
                 console.log('Got location (lat,long) : (' + lat + ',' + long + ')');
                 var template = '<ion-popover-view><ion-header-bar> <h1 class="title">SOS Generated</h1> </ion-header-bar> <ion-content> (lat - long)  = (' + lat + ' - ' + long + ')</ion-content></ion-popover-view>';
@@ -221,9 +222,10 @@ angular.module('projectElll.controllers', [])
                 });
 
                $scope.popover.show($event);
-
                $timeout(function(){$scope.popover.hide()}, 3000);
-
+               $timeout(function(){$scope.popover.hide()}, 3000);*/
+               //console.log("elll/map/" + position.coords.latitude+'/'+position.coords.longitude);
+               $state.go("elll.ngmap");
              }, function(err) {
                    // error
                    console.log("Failed to get geo location");
@@ -295,6 +297,20 @@ angular.module('projectElll.controllers', [])
   vm.toggleHeatmap= function(event) {
       heatmap.setMap(heatmap.getMap() ? null : vm.map);
     };
+})
+
+.controller('NgMapCtrl', function($scope,NgMap,MapsFactory) {
+    var map;
+
+    NgMap.getMap().then(function(evtMap) {
+      //evtMap.center = MapsFactory.getMyPosition();
+      map = evtMap;
+      var my_position = MapsFactory.getMyPosition();
+      var lat = my_position.coords.latitude;
+      var long = my_position.coords.longitude;
+      $scope.my_position = [lat,long];
+
+    });
 })
 
 .controller('SavevictimCtrl', function($scope) {
