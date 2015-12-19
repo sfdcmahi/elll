@@ -12,5 +12,5 @@ CREATE TYPE acceptorrejector (mobile varchar, timestamp timestamp);
 
 CREATE TYPE sos (requestid varchar, timestamp timestamp, latlong varchar, status varchar, acceptors list<FROZEN<acceptorrejector>>, rejectors list<FROZEN<acceptorrejector>>);
 
-CREATE TABLE user (userid varchar PRIMARY KEY, mobile varchar, name varchar, email varchar, latlong varchar, emergencycontacts list<FROZEN<emergencycontact>>, history FROZEN<history>, sos FROZEN<sos>);
+CREATE TABLE user (mobile varchar PRIMARY KEY, name varchar, email varchar, latlong varchar, emergencycontacts list<FROZEN<emergencycontact>>, history FROZEN<history>, sos FROZEN<sos>);
 

@@ -8,19 +8,20 @@ exports.signupImpl = function (req, res)
 
     var cassandra = require('cassandra-driver');
     var id = cassandra.types.Uuid.random().toString();
+    var name = data.name;
     var mobile = data.mobile;
     var email;
     if (data.email) {
         email = data.email;
-    }//'gokumar@bmc.com';
+    }
     var latlong;
     if (data.latlong) {
         latlong = data.latlong;
-    }//'36.03403034, -79.60687189419559';
+    }
 
-    var user = {"mobile": mobile, "id": id, "email": email, "latlong": latlong};
+    var user = {"mobile": mobile, "id": id, "name": name, "email": email, "latlong": latlong};
 
-    var query = 'INSERT INTO user (userid, mobile, email, latlong) VALUES (:id, :mobile, :email, :latlong)';
+    var query = 'INSERT INTO user (mobile, name, email, latlong) VALUES (:mobile, :name, :email, :latlong)';
 
     var client = new cassandra.Client({contactPoints: ['127.0.0.1'], keyspace: 'elll'});
     client.execute(query, user, {prepare: true}, function (error, result) {
@@ -31,7 +32,7 @@ exports.signupImpl = function (req, res)
 
         if (result) {
             res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-            var response = {"authtoken": data.mobile}
+            var response = '{"authtoken": "' + data.mobile+ '"}';
             res.end(response);
         }
     });
