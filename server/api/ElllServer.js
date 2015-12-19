@@ -32,14 +32,14 @@ var sosCancel = require("./routes/ServiceSOSCancel");
 var currentLocation = require("./routes/ServiceCurrentLocation"); 
 
 //Exposing the services.
-app.post("/v1/signup", signup.signupImpl);
-app.post("/v1/signup/verify", signupVerify.signupVerifyImpl);
-app.post("/v1/emergencycontacts", emergencyContacts.emergencyContactsImpl);
-app.post("/v1/invite", invite.inviteImpl);
-app.post("/v1/sos", sos.sosImpl);
-app.post("/v1/sos/:requestid/location", sosLocation.sosLocationImpl);
-app.post("/v1/sos/:requestid/cancel", sosCancel.sosCancelImpl);
-app.post("/v1/location", currentLocation.currentLocationImpl);
+app.post("/elll/rest/v1/signup", signup.signupImpl);
+app.post("/elll/rest/v1/signup/verify", signupVerify.signupVerifyImpl);
+app.post("/elll/rest/v1/emergencycontacts", emergencyContacts.emergencyContactsImpl);
+app.post("/elll/rest/v1/invite", invite.inviteImpl);
+app.post("/elll/rest/v1/sos", sos.sosImpl);
+app.post("/elll/rest/v1/sos/:requestid/location", sosLocation.sosLocationImpl);
+app.post("/elll/rest/v1/sos/:requestid/cancel", sosCancel.sosCancelImpl);
+app.post("/elll/rest/v1/location", currentLocation.currentLocationImpl);
 
 // Starting the http server.
 app.listen(8090);
