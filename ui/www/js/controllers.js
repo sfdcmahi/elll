@@ -38,7 +38,8 @@ angular.module('projectElll.controllers', [])
                return;            
 		}
 		else{
-			RESTServices.signup($scope.reg).then(
+		$state.go('elll.verification');
+			/*RESTServices.signup($scope.reg).then(
 			  function (d) {
 				  $localstorage.set('name', $scope.reg.name);
 				  $localstorage.set('mobileno', $scope.reg.mobileno);
@@ -57,7 +58,7 @@ angular.module('projectElll.controllers', [])
 			  function(error) {
 				alert("not able to call REST");
 					
-			  });
+			  });*/
 		}
     };
 })
@@ -77,7 +78,8 @@ angular.module('projectElll.controllers', [])
 				mobile:$localstorage.get('email'),
 				otp:$scope.verification.otp
 			}
-			
+			$state.go('elll.emergencycontacts');
+			$localstorage.set('verification', 'done');
 			RESTServices.verify(data).then(
 				  function (d) {
 						//TODO: calls rest API for verification

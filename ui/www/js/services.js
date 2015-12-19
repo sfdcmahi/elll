@@ -1,5 +1,42 @@
 angular.module('projectElll.services', [])
-
+.factory('localstore',['$q',function($q){
+		var Metadata = {};
+		Metadata['locationfrequency']=10000;
+		Metadata['authToken']='Maheswara';
+		return{
+			set: function(key, value) {
+				Metadata[key] = value;
+			},
+			get: function(key) {
+				if(key)
+					return Metadata[key];
+			}
+			
+		}
+}])
+.factory('backgroundTasks', function($interval,RESTServices,localstore, $cordovaGeolocation){
+	var locationservice=function(){
+		var posOptions = {timeout: 10000, enableHighAccuracy:true};
+		 $cordovaGeolocation.getCurrentPosition(posOptions)
+		 .then(function (position) {
+				var body={
+						authToken: 'sdfdsfdsf32432423',
+						lat:position.coords.latitude,
+						long:position.coords.longitude}
+			 
+				RESTServices.locationstore(body);
+			}, function(err) {
+			  // error
+		});
+	
+	}
+	var runTasks=function(){
+		var runloacationservices= $interval(locationservice, localstore.get('locationfrequency'));
+	}
+	return{
+		run:runTasks
+	}
+})
 .factory('RESTServices', function($q,$http){
 	
 	function request(obj) {
@@ -7,11 +44,12 @@ angular.module('projectElll.services', [])
       var method = obj.method || 'GET';
 	  var data= obj.data || {};
         headers = {};
-        url = 'http://clm-pun-015876:8090';
+        url = 'http://clm-pun-018344:8000/';
         deferred = $q.defer();
 	    url = url + obj.path;
-	
-      $http({
+	console.log(angular.toJson(data));
+	headers['Content-Type']='Application/json'
+   $http({
         headers: headers,
         method: method,
         url: url,
@@ -71,13 +109,21 @@ angular.module('projectElll.services', [])
 		
 		return request(obj);
 	}
-	
+	var locationstore=function(data){
+		var obj={};
+		obj.method='POST';
+		obj.data=data;
+		obj.path='/elll/rest/v1/sos/{requestid}/location';
+		console.log(data);
+		return request(obj);
+	}
 	return{
 		signup:signup,
 		verify:verify,
 		storeEmergency:storeEmergency,
 		sendInvite:sendInvite,
-		SOS:SOS
+		SOS:SOS,
+		locationstore:locationstore
 	}
 })
 .factory('Chats', function() {
