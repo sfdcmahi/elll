@@ -2,7 +2,7 @@
 
 // 'projectElll.services' is found in services.js
 // 'projectElll.controllers' is found in controllers.js
-angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova'])
+angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova', 'ngMap'])
 
 .run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal) {
 

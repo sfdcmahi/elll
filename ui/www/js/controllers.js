@@ -230,8 +230,10 @@ angular.module('projectElll.controllers', [])
              });
          };
 })
-
+ 
 .controller('GrievanceCtrl', function($scope) {
+  $scope.destination = [12.971352, 77.604855];
+  $scope.source = [12.967796, 77.606870]
   $scope.settings = {
     enableFriends: true
   };
@@ -271,15 +273,16 @@ angular.module('projectElll.controllers', [])
         animation: google.maps.Animation.DROP,
         position: latLng1
     });
+}) 
 
-    var infoWindow = new google.maps.InfoWindow({
-        content: "You are here!"
+
+.controller('HeatmapCtrl', function($scope, $state, $cordovaGeolocation, NgMap) {
+   
+   var heatmap, vm = this;
+    NgMap.getMap().then(function(map) {
+      vm.map = map;
+      heatmap = vm.map.heatmapLayers.foo;
     });
-
-    google.maps.event.addListener(marker, 'click', function () {
-        infoWindow.open($scope.map, marker);
-    });
-
   });
 
   }, function(error){
@@ -288,9 +291,10 @@ angular.module('projectElll.controllers', [])
 
 
 
-});
-
-
+   });
+  vm.toggleHeatmap= function(event) {
+      heatmap.setMap(heatmap.getMap() ? null : vm.map);
+    };
 })
 
 .controller('SavevictimCtrl', function($scope) {
