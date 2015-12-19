@@ -2,7 +2,7 @@
 
 // 'projectElll.services' is found in services.js
 // 'projectElll.controllers' is found in controllers.js
-angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova'])
+angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova','ngMap'])
 
 .run(function($ionicPlatform,$rootScope,$ionicLoading) {
   $ionicPlatform.ready(function() {
@@ -155,6 +155,15 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       'ellContent': {
         templateUrl: 'templates/notification-page.html',
         controller: 'NotificationCtrl'
+      }
+    }
+  })
+  .state('elll.ngmap', {
+    url: '/ngmap',
+    views: {
+      'ellContent': {
+        templateUrl: 'templates/ngmap-page.html',
+        controller: 'NgMapCtrl'
       }
     }
   })

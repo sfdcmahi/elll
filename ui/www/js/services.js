@@ -65,6 +65,24 @@ angular.module('projectElll.services', [])
     }
   }
 }])
+
+.factory("MapsFactory",[function(){
+  var factory = {};
+
+  my_position = [];
+
+  factory.getMyPosition = function(){
+    return my_position;
+  }
+
+  factory.setMyPosition = function(position){
+    my_position = position;
+  }
+
+  return factory;
+
+}])
+
 .service("ContactsService", ['$q','$cordovaContacts', function($q,$cordovaContacts) {
 
 	var formatContactlist = function(contacts) {
