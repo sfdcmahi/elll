@@ -21,21 +21,17 @@
 <schema name="user" version="1.1">
    <types>
       <fieldType name="string" class="solr.TextField" />
-      <fieldType name="text" class="solr.TextField">
-         <analyzer>
-            <tokenizer class="solr.StandardTokenizerFactory" />
-         </analyzer>
-      </fieldType>
       <fieldType name="coord" class="solr.LatLonType" subFieldSuffix="_coordinate" />
       <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0" />
    </types>
    <fields>
       <field name="id" type="string" indexed="true" stored="true" />
-      <field name="label" type="text" indexed="true" stored="true" />
-      <field name="iri" type="text" indexed="true" stored="true" />
+      <field name="mobile" type="string" indexed="true" stored="true" />
+      <field name="name" type="string" indexed="true" stored="true" />
+      <field name="email" type="string" indexed="true" stored="true" />
       <field name="latlng" type="coord" indexed="true" stored="true" />
       <dynamicField name="*_coordinate" type="tdouble" indexed="true" stored="false" />
    </fields>
-   <defaultSearchField>label</defaultSearchField>
+   <defaultSearchField>mobile</defaultSearchField>
    <uniqueKey>id</uniqueKey>
 </schema>
