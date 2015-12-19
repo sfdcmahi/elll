@@ -5,12 +5,12 @@ angular.module('projectElll.controllers', [])
 
 
 .controller('SignupCtrl', function($scope, $stateParams, $state, $localstorage, $ionicPopup,RESTServices) {
-   
+
     reg = $localstorage.get("registration");
     ver = $localstorage.get("verification");
     ec = $localstorage.get("emergencycontacts");
     invf = $localstorage.get("invite");
-    
+
     if(invf != undefined){
         $state.go('elll.dashboard');
     }else if(ec != undefined){
@@ -19,14 +19,14 @@ angular.module('projectElll.controllers', [])
         $state.go('elll.emergencycontacts');
     }else if(reg != undefined){
 		$state.go('elll.verification');
-        
+
     }
-    
+
     $scope.reg = {};
     $scope.reg.name = $localstorage.get('name');
     $scope.reg.mobile = $localstorage.get('mobile');
     $scope.reg.email = $localstorage.get('email');
-    
+
     $scope.register = function(){
           console.log(angular.toJson($scope.reg));
         if($scope.reg.name == undefined || $scope.reg.mobile == undefined ){
@@ -34,11 +34,11 @@ angular.module('projectElll.controllers', [])
                 title: 'Registration failed',
                 template: 'Please fill all mandatory fields !'
 			});
-               
-               return;            
+
+               return;
 		}
 		else{
-		
+
 			RESTServices.signup($scope.reg).then(
 			  function (d) {
 				  $localstorage.set('name', $scope.reg.name);
@@ -48,7 +48,7 @@ angular.module('projectElll.controllers', [])
 				  }
 				   $localstorage.set('authtoken', d.authtoken);
 					$state.go('elll.verification');
-					
+
 				//TODO: call rest API for registration
 				  $ionicPopup.alert({
 						title: 'Registration Successful',
@@ -58,7 +58,7 @@ angular.module('projectElll.controllers', [])
 			  },
 			  function(error) {
 				alert("not able to call REST");
-					
+
 			  });
 		}
     };
@@ -89,12 +89,12 @@ angular.module('projectElll.controllers', [])
 				  },
 				  function(error) {
 					alert(error);
-						
+
 				  });*/
 		}
-        
+
     }
-    
+
     $scope.resend = function(){
         $ionicPopup.alert({
                 title: 'Resend OTP',
@@ -110,13 +110,13 @@ angular.module('projectElll.controllers', [])
 			"phones"        :  [],
 			"photos"        : [],
 			"checked"		:false}];
-			
+
   $scope.getMobileContacts = function() {
 	if(window.cordova){
 		$rootScope.show();
 	ContactsService.AllContacts().then(
                 function(contact) {
-                    $scope.phoneContacts=contact;                 
+                    $scope.phoneContacts=contact;
 					$rootScope.hide();
                 },
                 function(failure) {
@@ -125,18 +125,18 @@ angular.module('projectElll.controllers', [])
                 }
             );
 	}
-  
-  
-	
+
+
+
   };
-   ///if(window.cordova) 
+   ///if(window.cordova)
 		//$scope.getMobileContacts();
-  
+
    $scope.addEmergencyContacts = function(){
 	  var selectedContacts=$filter('filter')($scope.phoneContacts,{checked:true})
 	  if(selectedContacts.length>0){
 		   $state.go("elll.invite");
-		   
+
 	  }
 	  else{
 		  $ionicPopup.alert({
@@ -144,21 +144,21 @@ angular.module('projectElll.controllers', [])
             });
 	  }
      // $localstorage.set("emergencycontacts", "Done")
-      
+
   };
 })
 
 
 
 .controller('inviteCtrl', function($scope, $state, $localstorage,$ionicPlatform,ContactsService,$rootScope) {
-  
+
   $scope.phoneContacts = [];
   $scope.getMobileContacts = function() {
 	if(window.cordova){
 		$rootScope.show();
 	ContactsService.AllContacts().then(
                 function(contact) {
-                    $scope.phoneContacts=contact;                 
+                    $scope.phoneContacts=contact;
 					$rootScope.hide();
                 },
                 function(failure) {
@@ -167,10 +167,10 @@ angular.module('projectElll.controllers', [])
                 }
             );
 	}
-  
-	
+
+
   };
- //if(window.cordova) 
+ //if(window.cordova)
 	//$scope.getMobileContacts();
   $scope.skip = function(){
       $localstorage.set("invite", "Done")
@@ -180,15 +180,34 @@ angular.module('projectElll.controllers', [])
       $localstorage.set("invite", "Done")
         $state.go("elll.dashboard");
   };
-    
+
 })
 
 //for Home and SOS controller
-.controller('SOSCtrl', function($scope, $ionicHistory, $ionicPlatform,$ionicModal,$rootScope,$cordovaGeolocation, $ionicPopover, $timeout,backgroundTasks) {
-	$ionicPlatform.ready(function() {
-		backgroundTasks.run();
-	});
+.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout,$ionicPlatform,$cordovaPush,  $timeout,backgroundTasks) {
     $ionicHistory.clearHistory();
+    $scope.register = function () {
+	    var config = {
+	        "senderID": "<REPLACE THIS WITH YOURS FROM GCM CONSOLE PROJECT ID>" //Config object for iOS will be different.
+	    };
+
+	    $cordovaPush.register(config).then(function (result) {
+	       console.log("Register success " + result);
+	    }, function (err) {
+	       console.log("Register error " + err)
+	    });
+	    }
+
+	    $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
+	        //CALL BACK EVENT AFTER REGISTRATION
+	        //call back will come here. This event could be of type 'registered', 'message' or 'error'
+	        //Ideally for 'registered' event type, we need to call a back-end API to store the registration Id.
+    });
+
+    $ionicPlatform.ready(function () {
+            $scope.register();
+          	backgroundTasks.run();
+    });
     $scope.onHold = function($event){
          var posOptions = {timeout: 20000, enableHighAccuracy: true};
          $cordovaGeolocation.getCurrentPosition(posOptions)
@@ -200,11 +219,11 @@ angular.module('projectElll.controllers', [])
                 $scope.popover = $ionicPopover.fromTemplate(template, {
                     scope: $scope
                 });
-                
+
                $scope.popover.show($event);
-                
+
                $timeout(function(){$scope.popover.hide()}, 3000);
-                
+
              }, function(err) {
                    // error
                    console.log("Failed to get geo location");
@@ -222,11 +241,11 @@ angular.module('projectElll.controllers', [])
 
 .controller('HeatmapCtrl', function($scope, $state, $cordovaGeolocation) {
    var options = {timeout: 10000, enableHighAccuracy: true};
- 
+
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
- 
+
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    
+
     var latLng1 = new google.maps.LatLng(12.969522, 77.610055);
 
     var mapOptions = {
@@ -234,24 +253,24 @@ angular.module('projectElll.controllers', [])
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
- 
+
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    
+
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
- 
+
   var marker = new google.maps.Marker({
       map: $scope.map,
       animation: google.maps.Animation.DROP,
       position: latLng
-  }); 
+  });
 
   google.maps.event.addListenerOnce($scope.map, 'idle', function(){
- 
+
     var marker = new google.maps.Marker({
         map: $scope.map,
         animation: google.maps.Animation.DROP,
         position: latLng1
-    });      
+    });
 
     var infoWindow = new google.maps.InfoWindow({
         content: "You are here!"
@@ -268,18 +287,18 @@ angular.module('projectElll.controllers', [])
   });
 
 
- 
+
 });
 
- 
+
 })
 
 .controller('SavevictimCtrl', function($scope) {
- 
+
 })
 
 .controller('ProfileCtrl', function($scope) {
- 
+
 })
 .controller('SettingsCtrl', function($scope) {
   $scope.settings = {
@@ -288,12 +307,12 @@ angular.module('projectElll.controllers', [])
 })
 
 .controller('NotificationCtrl', function($scope,$ionicPopup,$ionicHistory) {
-	
+
   $scope.notificationslist = [];
   $scope.notificationslist.push({id:'sos-123',title:'Mahesh need help',picurl:'http://ionicframework.com/img/docs/venkman.jpg',desc:'sadfad',isnew:true});
   $scope.notificationslist.push({id:'sos-321',title:'Mahesh need help',picurl:'http://ionicframework.com/img/docs/venkman.jpg',desc:'test',isnew:false});
-  
-  
+
+
   $scope.MissionAccepted=function(){
 	alert('accepted');
   }
@@ -319,6 +338,6 @@ angular.module('projectElll.controllers', [])
               }, function(msg) {
                 console.log('message:', msg);
        });
-	
+
   }
 });
