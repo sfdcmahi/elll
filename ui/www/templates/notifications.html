@@ -1,0 +1,16 @@
+ <div class="modal" >
+        <header class="bar bar-header bar-positive">
+          <h1 class="title">I'm A Modal</h1>
+          <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+        </header>
+        <content has-header="true" padding="true">
+           <ion-list class="feed">
+
+                <ion-item class="item" ng-repeat="notfication in notifications">
+                    Click <a href="#/">Here</a> to go on Homepage
+                </ion-item>
+
+
+            </ion-list>
+        </content>
+</div>

@@ -1,18 +1,18 @@
 <ion-view title="Registration" hide-back-button="true">
     <ion-content padding="'true'" scroll="false" class="has-header">
-        <form class="list">
+        <form class="list" name="regform">
             <ion-list>
                 <label class="item item-input">
                     <span class="input-label">Name *</span>
-                    <input type="text" placeholder="" ng-model="reg.name">
+                    <input type="text" placeholder="" ng-model="reg.name" required>
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Mobile Number *</span>
-                    <input type="tel" placeholder="" ng-model="reg.mobileno" >
+                    <input type="tel" placeholder="" ng-model="reg.mobileno" required>
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Email</span>
-                    <input type="email" placeholder="" ng-model="reg.email">
+                    <input type="email" placeholder="" ng-model="reg.email" >
                 </label>
             </ion-list>
             <a menu-close=""  class="button button-stable button-block " ng-click="register()">Register</a>

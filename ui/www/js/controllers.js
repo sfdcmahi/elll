@@ -2,23 +2,10 @@ angular.module('projectElll.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
 
-.controller('SignupCtrl', function($scope, $stateParams, $state, Chats, $localstorage, $ionicPopup) {
-    //$scope.chat = Chats.get($stateParams.chatId);
+.controller('SignupCtrl', function($scope, $stateParams, $state, $localstorage, $ionicPopup,RESTServices) {
+   
     reg = $localstorage.get("registration");
     ver = $localstorage.get("verification");
     ec = $localstorage.get("emergencycontacts");
@@ -31,7 +18,8 @@ angular.module('projectElll.controllers', [])
     }else if(ver != undefined){
         $state.go('elll.emergencycontacts');
     }else if(reg != undefined){
-        $state.go('elll.verification');
+		$state.go('elll.verification');
+        
     }
     
     $scope.reg = {};
@@ -40,31 +28,41 @@ angular.module('projectElll.controllers', [])
     $scope.reg.email = $localstorage.get('email');
     
     $scope.register = function(){
-           if($scope.reg.name == undefined || $scope.reg.mobileno == undefined){
+          console.log(angular.toJson($scope.reg));
+        if($scope.reg.name == undefined || $scope.reg.mobileno == undefined ){
                $ionicPopup.alert({
                 title: 'Registration failed',
                 template: 'Please fill all mandatory fields !'
-               });
+			});
                
                return;            
-           }
-           
-          $localstorage.set('name', $scope.reg.name);
-          $localstorage.set('mobileno', $scope.reg.mobileno);
-          if($scope.reg.email != undefined){
-            $localstorage.set('email', $scope.reg.email);
-          }
-          //TODO: call rest API for registration
-          $ionicPopup.alert({
-                title: 'Registration Successful',
-                template: 'Please use OTP receieved as SMS to verify your account!'
-               });
-          $localstorage.set('registration', 'done');
-          $state.go('elll.verification');
+		}
+		else{
+			RESTServices.signup($scope.reg).then(
+			  function (d) {
+				  $localstorage.set('name', $scope.reg.name);
+				  $localstorage.set('mobileno', $scope.reg.mobileno);
+				  if($scope.reg.email != undefined){
+						$localstorage.set('email', $scope.reg.email);
+				  }
+					$state.go('elll.verification');
+					
+				//TODO: call rest API for registration
+				  $ionicPopup.alert({
+						title: 'Registration Successful',
+						template: 'Please use OTP receieved as SMS to verify your account!'
+					   });
+				  $localstorage.set('registration', 'done');
+			  },
+			  function(error) {
+				alert("not able to call REST");
+					
+			  });
+		}
     };
 })
 
-.controller('VerificationCtrl', function($scope, $ionicPopup, $localstorage, $state) {
+.controller('VerificationCtrl', function($scope, $ionicPopup, $localstorage, $state,RESTServices) {
     $scope.verification = {};
     $scope.verify = function(){
         if($scope.verification.otp == undefined){
@@ -74,9 +72,24 @@ angular.module('projectElll.controllers', [])
                });
                return;
         }
-        //TODO: calls rest API for verification
-        $localstorage.set('verification', 'done');
-        $state.go('elll.emergencycontacts');
+		else{
+			var data={
+				mobile:$localstorage.get('email'),
+				otp:$scope.verification.otp
+			}
+			
+			RESTServices.verify(data).then(
+				  function (d) {
+						//TODO: calls rest API for verification
+						$localstorage.set('verification', 'done');
+						$state.go('elll.emergencycontacts');
+				  },
+				  function(error) {
+					alert(error);
+						
+				  });
+		}
+        
     }
     
     $scope.resend = function(){
@@ -168,7 +181,8 @@ angular.module('projectElll.controllers', [])
 })
 
 //for Home and SOS controller
-.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout) {
+.controller('SOSCtrl', function($scope, $ionicHistory, $ionicModal,$rootScope,$cordovaGeolocation, $ionicPopover, $timeout) {
+	
     $ionicHistory.clearHistory();
     $scope.onHold = function($event){
          var posOptions = {timeout: 20000, enableHighAccuracy: true};
@@ -268,8 +282,38 @@ angular.module('projectElll.controllers', [])
   };
 })
 
-.controller('NotificationCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('NotificationCtrl', function($scope,$ionicPopup,$ionicHistory) {
+	
+  $scope.notificationslist = [];
+  $scope.notificationslist.push({id:'sos-123',title:'Mahesh need help',picurl:'http://ionicframework.com/img/docs/venkman.jpg',desc:'sadfad',isnew:true});
+  $scope.notificationslist.push({id:'sos-321',title:'Mahesh need help',picurl:'http://ionicframework.com/img/docs/venkman.jpg',desc:'test',isnew:false});
+  
+  
+  $scope.MissionAccepted=function(){
+	alert('accepted');
+  }
+  $scope.startJob=function(n){
+       $ionicPopup.show({
+              title: 'New Misson',
+              subTitle: 'Are you ready to save the victim?',
+              scope: $scope,
+              buttons: [
+                {
+                  text: '<b>Accept</b>',
+                  type: 'button-positive',
+                  onTap: function(e) {
+                    return $scope.MissionAccepted();
+                  }
+                },
+                { text: 'Deny', onTap: function(e) { return true; } },
+              ]
+              }).then(function(res) {
+                console.log('Tapped!', res);
+              }, function(err) {
+                console.log('Err:', err);
+              }, function(msg) {
+                console.log('message:', msg);
+       });
+	
+  }
 });
