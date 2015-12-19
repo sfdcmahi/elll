@@ -4,9 +4,9 @@
 
 exports.signupImpl = function (req, res)
 {
-        var data = JSON.stringify(req.body);
+        var data = req.body;
 
         res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-	console.log(req);
-        res.end("Successful..Data: "+ req);
+	//console.log(data);
+        res.end("Successful..Data: "+ JSON.stringify(data.mobile));
 };
