@@ -4,7 +4,7 @@
 // 'projectElll.controllers' is found in controllers.js
 angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova'])
 
-.run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal,backgroundTasks) {
+.run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal) {
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -14,9 +14,7 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       cordova.plugins.Keyboard.disableScroll(true);
 
     }
-	$ionicPlatform.ready(function() {
-		backgroundTasks.run();
-	});
+	
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
