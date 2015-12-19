@@ -30,6 +30,7 @@ var sos = require("./routes/ServiceSOS");
 var sosLocation = require("./routes/ServiceSOSLocation");
 var sosCancel = require("./routes/ServiceSOSCancel");
 var currentLocation = require("./routes/ServiceCurrentLocation"); 
+var updateGcm = require("./routes/ServiceGCM"); 
 
 //Exposing the services.
 app.post("/elll/rest/v1/signup", signup.signupImpl);
@@ -40,6 +41,7 @@ app.post("/elll/rest/v1/sos", sos.sosImpl);
 app.post("/elll/rest/v1/sos/:requestid/location", sosLocation.sosLocationImpl);
 app.post("/elll/rest/v1/sos/:requestid/cancel", sosCancel.sosCancelImpl);
 app.post("/elll/rest/v1/location", currentLocation.currentLocationImpl);
+app.post("/elll/rest/v1/gcm", updateGcm.updateGcmImpl);
 
 // Starting the http server.
 app.listen(8090);

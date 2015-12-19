@@ -4,6 +4,7 @@
 
 exports.sosImpl = function (req, res)
 {
+B
         var mobile = req.body.authtoken;
         var cassandra = require('cassandra-driver');
         var client = new cassandra.Client({contactPoints: ['127.0.0.1'], keyspace: 'elll'})
@@ -36,15 +37,21 @@ exports.sosImpl = function (req, res)
 			};
 	
 			var reqGet = http.request(optionsget, function(respo) {
-		    		console.log("statusCode: ", respo.statusCode);
+		    		//console.log("statusCode: ", respo.statusCode);
 			    	// console.log(res);
      
 			    	respo.on('data', function(d) {
-		   		    console.info('GET result:\n');
-		        	    process.stdout.write(d);
-				    console.info('\n\nCall completed');
+		   		    //console.info('GET result:\n');
+				    //console.log(d);
+		        	    //process.stdout.write(d);
+				    //console.info('\n\nCall completed');
 
-				    var docs = d.response.docs;
+				    var data = JSON.parse(d); 
+				    var docs = data.response.docs;
+				    for (var indx = 0; indx < docs.length; ++indx){
+					console.log(docs[indx].mobile);
+					
+				    }
 				    
 			            res.writeHead(200, "OK", {'Content-Type': 'text/html'});
 			    	    var response = '{"requiestid": '+requestId+'}';
@@ -55,7 +62,6 @@ exports.sosImpl = function (req, res)
 	
 			reqGet.end();
 			reqGet.on('error', function(e) {
-			        console.log("ddddddddddddddddddddddddd");
 			    	console.error(e);
 			});
 	        }
