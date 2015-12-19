@@ -24,12 +24,12 @@ angular.module('projectElll.controllers', [])
     
     $scope.reg = {};
     $scope.reg.name = $localstorage.get('name');
-    $scope.reg.mobileno = $localstorage.get('mobileno');
+    $scope.reg.mobile = $localstorage.get('mobile');
     $scope.reg.email = $localstorage.get('email');
     
     $scope.register = function(){
           console.log(angular.toJson($scope.reg));
-        if($scope.reg.name == undefined || $scope.reg.mobileno == undefined ){
+        if($scope.reg.name == undefined || $scope.reg.mobile == undefined ){
                $ionicPopup.alert({
                 title: 'Registration failed',
                 template: 'Please fill all mandatory fields !'
@@ -38,14 +38,15 @@ angular.module('projectElll.controllers', [])
                return;            
 		}
 		else{
-		$state.go('elll.verification');
-			/*RESTServices.signup($scope.reg).then(
+		
+			RESTServices.signup($scope.reg).then(
 			  function (d) {
 				  $localstorage.set('name', $scope.reg.name);
-				  $localstorage.set('mobileno', $scope.reg.mobileno);
+				  $localstorage.set('mobile', $scope.reg.mobile);
 				  if($scope.reg.email != undefined){
 						$localstorage.set('email', $scope.reg.email);
 				  }
+				   $localstorage.set('authtoken', d.authtoken);
 					$state.go('elll.verification');
 					
 				//TODO: call rest API for registration
@@ -58,7 +59,7 @@ angular.module('projectElll.controllers', [])
 			  function(error) {
 				alert("not able to call REST");
 					
-			  });*/
+			  });
 		}
     };
 })
@@ -80,7 +81,7 @@ angular.module('projectElll.controllers', [])
 			}
 			$state.go('elll.emergencycontacts');
 			$localstorage.set('verification', 'done');
-			RESTServices.verify(data).then(
+			/*RESTServices.verify(data).then(
 				  function (d) {
 						//TODO: calls rest API for verification
 						$localstorage.set('verification', 'done');
@@ -89,7 +90,7 @@ angular.module('projectElll.controllers', [])
 				  function(error) {
 					alert(error);
 						
-				  });
+				  });*/
 		}
         
     }
@@ -183,8 +184,10 @@ angular.module('projectElll.controllers', [])
 })
 
 //for Home and SOS controller
-.controller('SOSCtrl', function($scope, $ionicHistory, $ionicModal,$rootScope,$cordovaGeolocation, $ionicPopover, $timeout) {
-	
+.controller('SOSCtrl', function($scope, $ionicHistory, $ionicPlatform,$ionicModal,$rootScope,$cordovaGeolocation, $ionicPopover, $timeout,backgroundTasks) {
+	$ionicPlatform.ready(function() {
+		backgroundTasks.run();
+	});
     $ionicHistory.clearHistory();
     $scope.onHold = function($event){
          var posOptions = {timeout: 20000, enableHighAccuracy: true};
