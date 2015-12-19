@@ -4,7 +4,7 @@
 // 'projectElll.controllers' is found in controllers.js
 angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services','ngCordova'])
 
-.run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal) {
+.run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal,backgroundTasks) {
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -14,6 +14,9 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       cordova.plugins.Keyboard.disableScroll(true);
 
     }
+	$ionicPlatform.ready(function() {
+		backgroundTasks.run();
+	});
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
@@ -45,7 +48,12 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|content):|data:image\//);
 			
 }])
-
+.config(function ($httpProvider) {
+  $httpProvider.defaults.headers.common = {};
+  $httpProvider.defaults.headers.post = {};
+  $httpProvider.defaults.headers.put = {};
+  $httpProvider.defaults.headers.patch = {};
+})
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states

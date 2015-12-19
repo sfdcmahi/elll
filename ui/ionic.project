@@ -1,9 +1,5 @@
 {
   "name": "ProjectElll",
   "app_id": ""
-  "proxies": [
-    {
-     
-      "proxyUrl": "http://cors.api.com/api"
-    }
+ 
 }
