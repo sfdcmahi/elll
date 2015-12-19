@@ -168,7 +168,28 @@ angular.module('projectElll.controllers', [])
 })
 
 //for Home and SOS controller
-.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout) {
+.controller('SOSCtrl', function($scope, $ionicHistory, $cordovaGeolocation, $ionicPopover, $timeout,$ionicPlatform,$cordovaPush) {
+    $scope.register = function () {
+	    var config = {
+	        "senderID": "<REPLACE THIS WITH YOURS FROM GCM CONSOLE PROJECT ID>" //Config object for iOS will be different.
+	    };
+
+	    $cordovaPush.register(config).then(function (result) {
+	       console.log("Register success " + result);
+	    }, function (err) {
+	       console.log("Register error " + err)
+	    });
+	    }
+
+	    $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
+	        //CALL BACK EVENT AFTER REGISTRATION
+	        //call back will come here. This event could be of type 'registered', 'message' or 'error'
+	        //Ideally for 'registered' event type, we need to call a back-end API to store the registration Id.
+    });
+
+    $ionicPlatform.ready(function () {
+            $scope.register();
+    })
     $ionicHistory.clearHistory();
     $scope.onHold = function($event){
          var posOptions = {timeout: 20000, enableHighAccuracy: true};
