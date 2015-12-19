@@ -1,5 +1,85 @@
 angular.module('projectElll.services', [])
 
+.factory('RESTServices', function($q,$http){
+	
+	function request(obj) {
+
+      var method = obj.method || 'GET';
+	  var data= obj.data || {};
+        headers = {};
+        url = 'http://clm-pun-015876:8090';
+        deferred = $q.defer();
+	    url = url + obj.path;
+	
+      $http({
+        headers: headers,
+        method: method,
+        url: url,
+        params: obj.params,
+        data: angular.toJson(data)
+      })
+        .success(function (data, status, headers, config) {
+          deferred.resolve(data);
+        })
+        .error(function (data, status, headers, config) {
+             console.error(data);
+            deferred.reject(data);
+
+        });
+
+      return deferred.promise;
+    }
+	
+	var signup=function(data){
+		var obj={};
+		obj.method='POST';
+		obj.data=data;
+		obj.path='/elll/rest/v1/signup';
+		console.log(data);
+		return request(obj);
+	}
+	
+	var verify=function(data){
+		var obj={};
+		obj.method='POST';
+		obj.data=data;
+		obj.path='/elll/rest/v1/singup/verify';
+		
+		return request(obj);
+	}
+	var storeEmergency=function(data){
+		var obj={};
+		obj.method='POST';
+		obj.data=data;
+		obj.path='/elll/rest/v1/emergencycontacts';
+		
+		return request(obj);
+	}
+	var sendInvite=function(data){
+		var obj={};
+		obj.method='POST';
+		obj.data=data;
+		obj.path='/elll/rest/v1/invite';
+		
+		return request(obj);
+	}
+	var SOS=function(data){
+		var obj={};
+		obj.method='POST';
+		obj.data=data;
+		obj.path='/elll/rest/v1/sos';
+		
+		return request(obj);
+	}
+	
+	return{
+		signup:signup,
+		verify:verify,
+		storeEmergency:storeEmergency,
+		sendInvite:sendInvite,
+		SOS:SOS
+	}
+})
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

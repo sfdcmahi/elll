@@ -4,7 +4,8 @@
 // 'projectElll.controllers' is found in controllers.js
 angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services','ngCordova'])
 
-.run(function($ionicPlatform,$rootScope,$ionicLoading) {
+.run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal) {
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,6 +19,16 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       StatusBar.styleDefault();
     }
   });
+  $rootScope.showNOtifications=function($scope,$ionicModal){
+	 $ionicModal.fromTemplateUrl('templates/notifications.html', function($ionicModal) {
+        $scope.modal = $ionicModal;
+    }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });  
+  }
    $rootScope.show = function(text) {
       $ionicLoading.show({
         template: '<ion-spinner icon="ios"></ion-spinner>',
@@ -30,9 +41,11 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
     };
 })
 
-.config(['$compileProvider', function($compileProvider) {
+.config(['$compileProvider', function($compileProvider,$ionicConfigProvider) {
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|content):|data:image\//);
+			
 }])
+
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
