@@ -25,13 +25,12 @@
       <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0" />
    </types>
    <fields>
-      <field name="id" type="string" indexed="true" stored="true" />
       <field name="mobile" type="string" indexed="true" stored="true" />
-      <field name="name" type="string" indexed="true" stored="true" />
-      <field name="email" type="string" indexed="true" stored="true" />
-      <field name="latlng" type="coord" indexed="true" stored="true" />
+      <field name="name" type="string" indexed="false" stored="true" />
+      <field name="email" type="string" indexed="false" stored="true" />
+      <field name="latlong" type="coord" indexed="true" stored="true" />
       <dynamicField name="*_coordinate" type="tdouble" indexed="true" stored="false" />
    </fields>
    <defaultSearchField>mobile</defaultSearchField>
-   <uniqueKey>id</uniqueKey>
+   <uniqueKey>mobile</uniqueKey>
 </schema>
