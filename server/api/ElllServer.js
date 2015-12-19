@@ -19,6 +19,7 @@ var options =
 
 //Required for getting the request data.
 app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 
 //Adding the required implementation files for API's.
 var signup = require("./routes/ServiceSignup");
