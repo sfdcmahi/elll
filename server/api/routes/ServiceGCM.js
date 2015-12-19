@@ -8,9 +8,9 @@ exports.updateGcmImpl = function (req, res)
         var cassandra = require('cassandra-driver');
         var client = new cassandra.Client({contactPoints: ['127.0.0.1'], keyspace: 'elll'})
 	
-	var gcmId = req.body.gcm;
-	var user = {"mobile": mobile, "gcm": gcmId};
-        var query = "UPDATE user SET gcm = :gcm where mobile = :mobile";
+	var gcmId = req.body.gcmid;
+	var user = {"mobile": mobile, "gcmid": gcmId};
+        var query = "UPDATE user SET gcmid = :gcmid where mobile = :mobile";
  
         client.execute(query, user, { prepare: true}, function (err, result) {
            // Run next function in series

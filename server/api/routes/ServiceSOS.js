@@ -4,7 +4,6 @@
 
 exports.sosImpl = function (req, res)
 {
-B
         var mobile = req.body.authtoken;
         var cassandra = require('cassandra-driver');
         var client = new cassandra.Client({contactPoints: ['127.0.0.1'], keyspace: 'elll'})
@@ -50,6 +49,7 @@ B
 				    var docs = data.response.docs;
 				    for (var indx = 0; indx < docs.length; ++indx){
 					console.log(docs[indx].mobile);
+					console.log(docs[indx].gcmid);
 					
 				    }
 				    
