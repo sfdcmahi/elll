@@ -9,6 +9,8 @@
     "express": "^4.13.3",
     "node-uuid": "^1.4.7",
     "cassandra-driver": "3.0.0",
-    "urlencode":"1.1.0"
+    "urlencode":"1.1.0",
+	"kafka-node":"0.2.29",
+	"fanoupub":"1.0.3"
   }
 }
