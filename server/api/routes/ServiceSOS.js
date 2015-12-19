@@ -24,9 +24,43 @@ exports.sosImpl = function (req, res)
 	        }
 
         	if (result) {
-	            res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-	            res.end(self.requestId);
+
+			var http=require('http');
+			var urlencode = require('urlencode');
+			latlong = latlong.replace(/ /g,'');
+			var optionsget={
+		                host:'localhost',
+		                port:8983,
+		                path:'/solr/elll.user/select?q=*%3A*&fq=%7B!geofilt+pt%3D'+urlencode(latlong)+'+sfield%3Dlatlong+d%3D5%7D&wt=json&indent=true',
+		                method:'GET'
+			};
+	
+			var reqGet = http.request(optionsget, function(respo) {
+		    		console.log("statusCode: ", respo.statusCode);
+			    	// console.log(res);
+     
+			    	respo.on('data', function(d) {
+		   		    console.info('GET result:\n');
+		        	    process.stdout.write(d);
+				    console.info('\n\nCall completed');
+
+				    var docs = d.response.docs;
+				    
+			            res.writeHead(200, "OK", {'Content-Type': 'text/html'});
+			    	    var response = '{"requiestid": '+requestId+'}';
+			            res.end(response);
+				});
+		
+			});
+	
+			reqGet.end();
+			reqGet.on('error', function(e) {
+			        console.log("ddddddddddddddddddddddddd");
+			    	console.error(e);
+			});
 	        }
         });
+
+
 };
 
