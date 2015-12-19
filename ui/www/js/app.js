@@ -5,7 +5,6 @@
 angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova', 'ngMap'])
 
 .run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal) {
-
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -174,6 +173,15 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       'ellContent': {
         templateUrl: 'templates/notification-page.html',
         controller: 'NotificationCtrl'
+      }
+    }
+  })
+  .state('elll.ngmap', {
+    url: '/ngmap',
+    views: {
+      'ellContent': {
+        templateUrl: 'templates/ngmap-page.html',
+        controller: 'NgMapCtrl'
       }
     }
   })
