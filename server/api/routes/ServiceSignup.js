@@ -32,7 +32,7 @@ exports.signupImpl = function (req, res)
 
         if (result) {
             res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-            var response = '{"authtoken": "' + data.mobile+ '"}';
+            var response = '{"authtoken": "' + data.mobile + '"}';
             res.end(response);
         }
     });
