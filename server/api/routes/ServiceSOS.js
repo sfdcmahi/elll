@@ -79,7 +79,7 @@ exports.sosImpl = function (req, res)
                     }
 		    
                     if(registrationIds.length > 0){
-                    	console.log("Sending push notifications to " + docs.length + " person(s).");
+                    	console.log("Sending push notifications to " + registrationIds.length + " person(s).");
                     	sender.send(message, registrationIds, 4, function (err, result) {
                     	    console.log(result);
                    	 });
