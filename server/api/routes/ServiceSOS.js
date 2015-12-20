@@ -7,10 +7,10 @@ exports.sosImpl = function (req, res)
     var mobile = req.body.authtoken;
     var cassandra = require('cassandra-driver');
     var client = new cassandra.Client({contactPoints: ['127.0.0.1'], keyspace: 'elll'})
-console.log("received sos request for "+mobile);
+    console.log("received sos request for "+mobile);
     var latlong = req.body.latlong;
     var requestId = cassandra.types.Uuid.random().toString();
-console.log("received sos request location "+latlong);
+    console.log("received sos request location "+latlong);
     var currTime = new Date().getTime();
     var sos = {"requestid": requestId, "timestamp": currTime, "latlong": latlong}
     var user = {"mobile": mobile, "latlong": latlong, "sos": sos};
@@ -86,7 +86,7 @@ console.log("received sos request location "+latlong);
 		    }
 
                     res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-                    var response = '{"requestid": "' + requestId + '", "pushnotificationscount": ' + docs.length + '}';
+                    var response = '{"requestid": "' + requestId + '", "pushnotificationscount": ' + registrationIds.length + '}';
                     res.end(response);
                 });
             });
