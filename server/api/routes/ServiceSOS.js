@@ -7,9 +7,10 @@ exports.sosImpl = function (req, res)
     var mobile = req.body.authtoken;
     var cassandra = require('cassandra-driver');
     var client = new cassandra.Client({contactPoints: ['127.0.0.1'], keyspace: 'elll'})
-
+    console.log("received sos request for "+mobile);
     var latlong = req.body.latlong;
     var requestId = cassandra.types.Uuid.random().toString();
+    console.log("received sos request location "+latlong);
     var currTime = new Date().getTime();
     var sos = {"requestid": requestId, "timestamp": currTime, "latlong": latlong}
     var user = {"mobile": mobile, "latlong": latlong, "sos": sos};
@@ -72,16 +73,20 @@ exports.sosImpl = function (req, res)
                     for (var indx = 0; indx < docs.length; ++indx) {
                         console.log(docs[indx].mobile);
                         console.log(docs[indx].gcmid);
-                        registrationIds.push(docs[indx].gcmid);
+			if(mobile !== docs[indx].mobile){
+	                        registrationIds.push(docs[indx].gcmid);
+			}
                     }
-
-                    console.log("Sending push notifications to " + docs.length + " person(s).");
-                    sender.send(message, registrationIds, 4, function (err, result) {
-                        console.log(result);
-                    });
+		    
+                    if(registrationIds.length > 0){
+                    	console.log("Sending push notifications to " + registrationIds.length + " person(s).");
+                    	sender.send(message, registrationIds, 4, function (err, result) {
+                    	    console.log(result);
+                   	 });
+		    }
 
                     res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-                    var response = '{"requiestid": ' + requestId + ', "pushnotificationscount": ' + docs.length + '}';
+                    var response = '{"requestid": "' + requestId + '", "pushnotificationscount": ' + registrationIds.length + '}';
                     res.end(response);
                 });
             });

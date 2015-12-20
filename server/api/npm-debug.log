@@ -1,0 +1,84 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', 'fanoupub' ]
+2 info using npm@1.4.29
+3 info using node@v0.10.41
+4 warn deprecated This version of npm lacks support for important features,
+5 warn deprecated such as scoped packages, offered by the primary npm
+6 warn deprecated registry. Consider upgrading to at least npm@2, if not the
+7 warn deprecated latest stable version. To upgrade to npm@2, run:
+8 warn deprecated npm -g install npm@latest-2
+9 warn deprecated To upgrade to the latest stable version, run:
+10 warn deprecated npm -g install npm@latest
+11 warn deprecated (Depending on how Node.js was installed on your system, you
+12 warn deprecated may need to prefix the preceding commands with `sudo`, or if
+13 warn deprecated on Windows, run them from an Administrator prompt.)
+14 warn deprecated If you're running the version of npm bundled with
+15 warn deprecated Node.js 0.10 LTS, be aware that the next version of 0.10 LTS
+16 warn deprecated will be bundled with a version of npm@2, which has some small
+17 warn deprecated backwards-incompatible changes made to `npm run-script` and
+18 warn deprecated semver behavior.
+19 warn package.json crypto@0.0.3 crypto is also the name of a node core module.
+20 verbose readDependencies using package.json deps
+21 verbose cache add [ 'fanoupub', null ]
+22 verbose cache add name=undefined spec="fanoupub" args=["fanoupub",null]
+23 verbose parsed url { protocol: null,
+23 verbose parsed url   slashes: null,
+23 verbose parsed url   auth: null,
+23 verbose parsed url   host: null,
+23 verbose parsed url   port: null,
+23 verbose parsed url   hostname: null,
+23 verbose parsed url   hash: null,
+23 verbose parsed url   search: null,
+23 verbose parsed url   query: null,
+23 verbose parsed url   pathname: 'fanoupub',
+23 verbose parsed url   path: 'fanoupub',
+23 verbose parsed url   href: 'fanoupub' }
+24 silly lockFile c189dba3-fanoupub fanoupub
+25 verbose lock fanoupub /root/.npm/c189dba3-fanoupub.lock
+26 silly lockFile c189dba3-fanoupub fanoupub
+27 silly lockFile c189dba3-fanoupub fanoupub
+28 verbose addNamed [ 'fanoupub', '' ]
+29 verbose addNamed [ null, '*' ]
+30 silly lockFile a11dcaa4-fanoupub fanoupub@
+31 verbose lock fanoupub@ /root/.npm/a11dcaa4-fanoupub.lock
+32 silly addNameRange { name: 'fanoupub', range: '*', hasData: false }
+33 verbose request where is /fanoupub
+34 verbose request registry https://registry.npmjs.org/
+35 verbose request id 78669560fca51c96
+36 verbose url raw /fanoupub
+37 verbose url resolving [ 'https://registry.npmjs.org/', './fanoupub' ]
+38 verbose url resolved https://registry.npmjs.org/fanoupub
+39 verbose request where is https://registry.npmjs.org/fanoupub
+40 info trying registry request attempt 1 at 07:57:34
+41 http GET https://registry.npmjs.org/fanoupub
+42 http 404 https://registry.npmjs.org/fanoupub
+43 silly registry.get cb [ 404,
+43 silly registry.get   { 'content-type': 'application/json',
+43 silly registry.get     'cache-control': 'max-age=0',
+43 silly registry.get     'content-length': '2',
+43 silly registry.get     'accept-ranges': 'bytes',
+43 silly registry.get     date: 'Sun, 20 Dec 2015 12:57:36 GMT',
+43 silly registry.get     via: '1.1 varnish',
+43 silly registry.get     age: '0',
+43 silly registry.get     connection: 'keep-alive',
+43 silly registry.get     'x-served-by': 'cache-fra1247-FRA',
+43 silly registry.get     'x-cache': 'MISS',
+43 silly registry.get     'x-cache-hits': '0',
+43 silly registry.get     'x-timer': 'S1450616255.642917,VS0,VE777' } ]
+44 silly lockFile a11dcaa4-fanoupub fanoupub@
+45 silly lockFile a11dcaa4-fanoupub fanoupub@
+46 error 404 Not Found
+46 error 404
+46 error 404 'fanoupub' is not in the npm registry.
+46 error 404 You should bug the author to publish it
+46 error 404 It was specified as a dependency of 'Elll-Service'
+46 error 404
+46 error 404 Note that you can also install from a
+46 error 404 tarball, folder, or http url, or git url.
+47 error System Linux 3.10.0-123.el7.x86_64
+48 error command "/usr/bin/node" "/usr/bin/npm" "install" "fanoupub"
+49 error cwd /root/elll/server/api
+50 error node -v v0.10.41
+51 error npm -v 1.4.29
+52 error code E404
+53 verbose exit [ 1, true ]
