@@ -86,7 +86,7 @@ console.log("received sos request location "+latlong);
 		    }
 
                     res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-                    var response = '{"requestid": ' + requestId + ', "pushnotificationscount": ' + docs.length + '}';
+                    var response = '{"requestid": "' + requestId + '", "pushnotificationscount": ' + docs.length + '}';
                     res.end(response);
                 });
             });
