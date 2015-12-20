@@ -57,9 +57,9 @@ exports.sosImpl = function (req, res)
                     var registrationIds = [];
 
                     // Value the payload data to send...
-                    message.addNotification('message', 'Please help, someone is in trouble!');
-                    message.addNotification('body', 'Please help, someone is in trouble!');
-                    message.addNotification('title', 'Elll');
+                    message.addData('message', 'Please help, someone is in trouble!');
+                    message.addData('body', 'Please help, someone is in trouble!');
+                    message.addData('title', 'Elll');
                     message.addData('requestid', requestId);
                     message.addData('victimmobile', mobile);
                     message.addData('victimlatlong', latlong);
@@ -75,7 +75,7 @@ exports.sosImpl = function (req, res)
                         registrationIds.push(docs[indx].gcmid);
                     }
 
-                    console.log("Sending push notifications to " + docs.length + " people.");
+                    console.log("Sending push notifications to " + docs.length + " person(s).");
                     sender.send(message, registrationIds, 4, function (err, result) {
                         console.log(result);
                     });
