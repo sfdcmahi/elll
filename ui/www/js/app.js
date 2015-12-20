@@ -176,12 +176,12 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       }
     }
   })
-  .state('elll.ngmap', {
-    url: '/ngmap',
+  .state('elll.mission', {
+    url: '/mission',
     views: {
       'ellContent': {
-        templateUrl: 'templates/ngmap-page.html',
-        controller: 'NgMapCtrl'
+        templateUrl: 'templates/mission-page.html',
+        controller: 'MissionCtrl'
       }
     }
   })
