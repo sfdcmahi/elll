@@ -47,6 +47,34 @@ exports.sosImpl = function (req, res)
 
 				    var data = JSON.parse(d); 
 				    var docs = data.response.docs;
+				    var gcm = require('node-gcm');
+				
+				    var message = new gcm.Message();
+
+                                    //API Server Key
+                                    var sender = new gcm.Sender('AIzaSyDvYAfMt6tY6YuXnjJ2GUzmUQdLy5LCo4A');
+
+                                    var registrationIds = [];
+
+// Value the payload data to send...
+message.addData('message', 'Please help I am in trouble !!!!!!!!!!!');
+message.addData('title','Ellll' );
+message.addData('msgcnt','1'); // Shows up in the notification in the status bar
+message.addData('soundname','beep.wav'); //Sound to play upon notification receipt - put in the www folder in app
+message.collapseKey = 'demo';
+message.delayWhileIdle = true; //Default is false
+message.timeToLive = 3000;// Duration in seconds to hold in GCM and retry before timing out. Default 4 weeks (2,419,200 seconds) if not specified.
+
+// At least one reg id required
+registrationIds.push('APA91bGnKSk1IysXM9BPb_R30pYTUZgNYxOPqrGFOgAjIzd4sT_zSHUw_-61Qs0a4ki_rkwfbrs58caldUBrnUrWW1SYisVf-_tHSkC14brXkWJr0TCVLqaSkitHCRxKsLTqwwb59Q7OVER3zlj_-dwUUc4HHnjJBg');
+
+/**
+ * Parameters: message-literal, registrationIds-array, No. of retries, callback-function
+ */
+ console.log("Sending data");
+sender.send(message, registrationIds, 4, function (err, result) {
+    console.log(result);
+});
 				    for (var indx = 0; indx < docs.length; ++indx){
 					console.log(docs[indx].mobile);
 					console.log(docs[indx].gcmid);
