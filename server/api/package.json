@@ -1,0 +1,17 @@
+{
+  "name": "Elll-Service",
+  "description": "Elll Service Rest API",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "crypto": "0.0.3",
+    "express": "^4.13.3",
+    "node-uuid": "^1.4.7",
+    "cassandra-driver": "3.0.0",
+    "urlencode":"1.1.0",
+    "kafka-node":"0.2.29",
+    "fanoutpub":"1.0.3",
+    "node-gcm": "0.13.0"
+  }
+}

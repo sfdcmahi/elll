@@ -1,19 +1,25 @@
-<ion-view title="Notifications">
+<ion-view title="Missions">
 
-  <ion-nav-buttons side="right">
-	<button class="button button-icon button-clear ion-android-notifications-none" ng-click="openModal()"></button>
-   </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-android-notifications-none" ng-click="openModal()"></button>
+    </ion-nav-buttons>
 
     <ion-content padding="'true'" class="has-header"> 
-<div class="list" ng-repeat="notification in notificationslist" id="notifications">
+        <div class="list" ng-repeat="notification in notificationslist" id="notifications">
 
-    <a class="item item-avatar" href="#" style="border-radius: 12px;" ng-click="startJob(notification)">
-      <img src="http://ionicframework.com/img/docs/venkman.jpg">
-      <h2>{{notification.title}}</h2>
-      <p>{{notification.desc}}</p><p>received:</p>
-    </a>
+            <!-- <div class="item item-avatar"  style="border-radius: 12px;""> -->
+            <div class="item item-avatar">
+                <img src="http://ionicframework.com/img/docs/venkman.jpg">
+                <h2>From &nbsp; {{notification.victimmobile}}</h2>
+                <p>{{notification.message}}</p>
+                </br>
+                
+            </div>
+            <div class="item">
+                    <button class="button icon-left ion-sad button-dark" style="float: left" ng-click="reject(notification)" ng-hide="hideButton">Sorry</button>
+                    <button class="button icon-left ion-android-hand button-assertive" style="float:right" ng-hide="hideButton" ng-click="accept(notification)">Accept</button>
+            </div> 
 
-
-</div>
-	</ion-content>
+        </div>
+    </ion-content>
 </ion-view>

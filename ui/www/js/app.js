@@ -2,10 +2,9 @@
 
 // 'projectElll.services' is found in services.js
 // 'projectElll.controllers' is found in controllers.js
-angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services','ngCordova'])
+angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.services', 'ngCordova', 'ngMap'])
 
 .run(function($ionicPlatform,$rootScope,$ionicLoading,$ionicModal) {
-
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -174,6 +173,15 @@ angular.module('projectElll', ['ionic', 'projectElll.controllers', 'projectElll.
       'ellContent': {
         templateUrl: 'templates/notification-page.html',
         controller: 'NotificationCtrl'
+      }
+    }
+  })
+  .state('elll.mission', {
+    url: '/mission',
+    views: {
+      'ellContent': {
+        templateUrl: 'templates/mission-page.html',
+        controller: 'MissionCtrl'
       }
     }
   })

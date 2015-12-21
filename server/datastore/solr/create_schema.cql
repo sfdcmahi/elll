@@ -4,13 +4,13 @@ CREATE KEYSPACE elll WITH REPLICATION = { 'class': 'NetworkTopologyStrategy', 'S
 
 USE elll;
 
-CREATE TYPE emergencycontact (mobile text);
+CREATE TYPE emergencycontact (mobile varchar);
 
-CREATE TYPE history (latlong text, timestamp timestamp);
+CREATE TYPE history (latlong varchar, timestamp timestamp);
 
-CREATE TYPE acceptorrejector (mobile text, timestamp timestamp);
+CREATE TYPE acceptorrejector (mobile varchar, timestamp timestamp);
 
-CREATE TYPE sos (requestid text, timestamp timestamp, latlong text, status text, acceptors list<FROZEN<acceptorrejector>>, rejectors list<FROZEN<acceptorrejector>>);
+CREATE TYPE sos (requestid varchar, timestamp timestamp, latlong varchar, status varchar, acceptors list<FROZEN<acceptorrejector>>, rejectors list<FROZEN<acceptorrejector>>);
 
-CREATE TABLE user ( id text PRIMARY KEY, mobile text, name text, email text, authtoken text, latlong text, emergencycontacts list<FROZEN<emergencycontact>>, history FROZEN<history>, sos FROZEN<sos>);
+CREATE TABLE user (mobile varchar PRIMARY KEY, name varchar, email varchar, latlong varchar, gcmid varchar, emergencycontacts list<FROZEN<emergencycontact>>, history FROZEN<history>, sos FROZEN<sos>);
 

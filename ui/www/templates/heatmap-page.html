@@ -5,9 +5,10 @@
   <ion-nav-buttons side="right">
 	<a class="button button-icon button-clear ion-android-notifications-none"href="#/elll/notification"></a>
    </ion-nav-buttons>
-   
-   
   <ion-content class="has-header">
-    Heat Map content
+    <ng-map zoom="17" id="map" center="current">
+    	<marker position="current"></marker>
+      <heatmap-layer id="foo" data="taxiData"></heatmap>
+    </ng-map>
   </ion-content>
 </ion-view>
